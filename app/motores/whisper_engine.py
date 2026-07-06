@@ -19,6 +19,7 @@ for _ruta in RUTAS_FFMPEG_POSIBLES:
 class WhisperEngine:
     def __init__(self):
         # 🚀 ESCALADO A WHISPER-SMALL: Más capacidad conceptual para evitar fusiones acústicas erróneas
+        # Tambien existen (base) que es un poco inferior a small y (tiny) que es más rápido pero menos preciso. Aquí priorizamos precisión.
         print("⏳ [IA] Inicializando Motor 2: Transcriptor Whisper Preciso (openai/whisper-small)...")
         try:
             self.pipe = pipeline(
