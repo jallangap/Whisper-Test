@@ -18,18 +18,18 @@ for _ruta in RUTAS_FFMPEG_POSIBLES:
 
 class WhisperEngine:
     def __init__(self):
-        # 🚀 INCREMENTO DE FIABILIDAD: Escalamos a Whisper-Base local y gratuito
-        print("⏳ [IA] Inicializando Motor 2: Transcriptor Whisper Preciso (openai/whisper-base)...")
+        # 🚀 ESCALADO A WHISPER-SMALL: Más capacidad conceptual para evitar fusiones acústicas erróneas
+        print("⏳ [IA] Inicializando Motor 2: Transcriptor Whisper Preciso (openai/whisper-small)...")
         try:
             self.pipe = pipeline(
                 "automatic-speech-recognition", 
-                model="openai/whisper-base",
+                model="openai/whisper-small",
                 chunk_length_s=30,
                 batch_size=8
             )
-            print("✅ [IA] Motor 2 (Whisper Base) cargado exitosamente.")
+            print("✅ [IA] Motor 2 (Whisper Small) cargado exitosamente.")
         except Exception as e:
-            print(f"❌ [Whisper Error] No se pudo inicializar el modelo Base: {str(e)}")
+            print(f"❌ [Whisper Error] No se pudo inicializar el modelo Small: {str(e)}")
             self.pipe = None
 
         self.ultimo_idioma_detectado = "Detectando idioma nativo..."
@@ -48,15 +48,17 @@ class WhisperEngine:
             return ""
 
         try:
-            print(f"🎙️ [Whisper Base] Procesando señales de audio en: {os.path.basename(ruta_audio)}")
+            print(f"🎙️ [Whisper Small] Procesando señales de audio en: {os.path.basename(ruta_audio)}")
             
-            # 🚀 OPTIMIZACIÓN DE ALTA FIABILIDAD:
-            # Evaluación por haz (num_beams=4) para máxima coherencia en español generalizado.
+            # 🚀 DETECCIÓN Y TRANSCRIPCIÓN DINÁMICA:
+            # Al no definir "language", Whisper detecta el idioma automáticamente en los primeros 30s 
+            # y fuerza ese token de idioma internamente para mantener la máxima coherencia gramatical.
             resultado = self.pipe(
                 ruta_audio, 
                 return_timestamps=True,
                 generate_kwargs={
-                    "num_beams": 4
+                    "num_beams": 4,
+                    "task": "transcribe"
                 }
             )
             
@@ -81,7 +83,7 @@ class WhisperEngine:
             return texto_puro
 
         except Exception as e:
-            print(f"❌ [Whisper Base] Error crítico durante la transcripción: {str(e)}")
+            print(f"❌ [Whisper Small] Error crítico durante la transcripción: {str(e)}")
             raise e
 
     def _extraer_metadatos_forenses(self, texto: str, chunks: list, duracion_fisica: float) -> None:
@@ -110,7 +112,7 @@ class WhisperEngine:
         total_palabras = len(palabras)
         palabras_por_segundo = round(total_palabras / duracion_habla, 2) if duracion_habla > 0 else 0.0
 
-        self.ultimo_idioma_detectado = "es (Inferencia Automática Whisper Base)"
+        self.ultimo_idioma_detectado = "Inferencia Automática Whisper Small"
 
         # Guardamos todo en tu estado analítico interno
         self.metricas_ultimo_analisis = {
