@@ -50,23 +50,20 @@ class WhisperEngine:
         try:
             print(f"🎙️ [Whisper Base] Procesando señales de audio en: {os.path.basename(ruta_audio)}")
             
-            # 🌐 INFERENCIA DINÁMICA: Whisper Base detectará el idioma original del hablante
+            # 🚀 OPTIMIZACIÓN DE ALTA FIABILIDAD:
+            # Evaluación por haz (num_beams=4) para máxima coherencia en español generalizado.
             resultado = self.pipe(
                 ruta_audio, 
                 return_timestamps=True,
                 generate_kwargs={
-                    "task": "transcribe",
-                    # 🚀 BEAM SEARCH: Evalúa 4 caminos alternativos en paralelo para corregir fonemas confusos
-                    "num_beams": 4,
-                    # 🧠 PROMPT DE ESTILO GENERAL: Obliga al modelo a buscar coherencia gramatical universal
-                    "initial_prompt": "Transcripción formal, limpia, exacta y articulada. Respeta la ortografía y corrige uniones confusas de palabras."
+                    "num_beams": 4
                 }
             )
             
             texto_puro = resultado.get("text", "").strip()
             chunks_temporales = resultado.get("chunks", [])
 
-            # 🛠️ MEDICIÓN NATIVA DEL ARCHIVO (13 segundos reales)
+            # 🛠️ MEDICIÓN NATIVA DEL ARCHIVO REAL MEDIANTE METADATOS WAV
             duracion_fisica_real = 0.0
             try:
                 with wave.open(ruta_audio, "rb") as archivo_wav:
@@ -74,12 +71,13 @@ class WhisperEngine:
                     rate = archivo_wav.getframerate()
                     duracion_fisica_real = frames / float(rate)
             except Exception:
-                # Si no es un WAV puro o falla, usamos un respaldo pasivo
+                # Respaldo pasivo por si el archivo está corrupto o es de otro formato
                 duracion_fisica_real = 0.0
             
-            # Procesamos las métricas periciales en segundo plano
+            # 📊 Sincronizamos las métricas periciales cruzadas enviando los 3 parámetros requeridos
             self._extraer_metadatos_forenses(texto_puro, chunks_temporales, duracion_fisica_real)
             
+            # 🚀 EL RETURN DEBE IR AL FINAL: Entregamos el texto limpio a main.py una vez calculado todo
             return texto_puro
 
         except Exception as e:
