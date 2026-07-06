@@ -55,7 +55,11 @@ class WhisperEngine:
                 ruta_audio, 
                 return_timestamps=True,
                 generate_kwargs={
-                    "task": "transcribe"
+                    "task": "transcribe",
+                    # 🚀 BEAM SEARCH: Evalúa 4 caminos alternativos en paralelo para corregir fonemas confusos
+                    "num_beams": 4,
+                    # 🧠 PROMPT DE ESTILO GENERAL: Obliga al modelo a buscar coherencia gramatical universal
+                    "initial_prompt": "Transcripción formal, limpia, exacta y articulada. Respeta la ortografía y corrige uniones confusas de palabras."
                 }
             )
             
