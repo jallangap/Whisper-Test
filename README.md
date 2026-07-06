@@ -20,7 +20,7 @@ El subsistema de análisis de texto y transcripción opera de manera modular baj
 
 El motor de inteligencia artificial requiere de binarios externos para descomprimir matrices multimedia. Para asegurar la portabilidad del proyecto entre las computadoras de todo el equipo, se ha estandarizado una ruta absoluta independiente del usuario del sistema operativo:
 
-1. Descarga el archivo oficial comprimido: [FFmpeg Essentials Build (ZIP)](https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip).
+1. Descarga el archivo oficial comprimido: [ffmpeg-release-essentials.zip](https://www.gyan.dev/ffmpeg/builds/).
 2. Extrae el contenido directamente en la raíz de tu **Disco Local C:**.
 3. Asegúrate de renombrar la carpeta para que la ruta hacia los ejecutables sea exactamente la siguiente:
 
