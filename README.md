@@ -45,7 +45,11 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 .\venv\Scripts\activate
 
 # 4. Actualizar el gestor de paquetes e instalar las librerías neuronales
+
 pip install --upgrade pip
+o
+python -m pip install --upgrade pip
+
 pip install -r requirements.txt
 ```
 
